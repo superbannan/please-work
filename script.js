@@ -1,113 +1,107 @@
 let clicks = 0;
-let perClick = 1;
-let power = 0; // Combined power from all upgrades
-let clickPowerCost = 10;
+let bonus = 0; // Total bonus from upgrades
+let power = 0; // Visual indicator of upgrade strength
+let clickBoostCost = 10;
 let autoClickerCost = 50;
-let luckyCharmCost = 100;
-let tomTomDrumCost = 200;
-let rhythmMasterCost = 500;
-let goldenTomCost = 1000;
+let drumRollCost = 100;
+let tomFrenzyCost = 250;
+let beatMasterCost = 500;
 
 let autoClickers = 0;
-let luckyMultiplier = 1;
-let drumBoost = 0;
-let rhythmBonus = 0;
-let goldenMultiplier = 1;
+let clickBoostLevel = 0;
+let drumRollBonus = 0;
+let frenzyMultiplier = 1;
+let beatMasterBonus = 0;
 
 const clicksDisplay = document.getElementById('clicks');
-const perClickDisplay = document.getElementById('perClick');
+const bonusDisplay = document.getElementById('bonus');
 const powerDisplay = document.getElementById('power');
 const clickBtn = document.getElementById('clickBtn');
-const clickPowerBtn = document.getElementById('clickPowerBtn');
+const clickBoostBtn = document.getElementById('clickBoostBtn');
 const autoClickerBtn = document.getElementById('autoClickerBtn');
-const luckyCharmBtn = document.getElementById('luckyCharmBtn');
-const tomTomDrumBtn = document.getElementById('tomTomDrumBtn');
-const rhythmMasterBtn = document.getElementById('rhythmMasterBtn');
-const goldenTomBtn = document.getElementById('goldenTomBtn');
+const drumRollBtn = document.getElementById('drumRollBtn');
+const tomFrenzyBtn = document.getElementById('tomFrenzyBtn');
+const beatMasterBtn = document.getElementById('beatMasterBtn');
 const message = document.getElementById('message');
 
-// Click handler
+// Click handler - always adds 1 base click plus bonus
 clickBtn.addEventListener('click', () => {
-    let clickValue = Math.floor(perClick * luckyMultiplier * goldenMultiplier + drumBoost + rhythmBonus);
-    clicks += clickValue;
+    let totalClick = 1 + bonus; // Base 1 click + bonus
+    clicks += totalClick;
     updateDisplay();
-    showMessage(`+${clickValue} clicks!`);
+    showMessage(`+${totalClick} clicks!`);
 });
 
 // Upgrade handlers
-clickPowerBtn.addEventListener('click', () => buyUpgrade('clickPower', clickPowerCost, () => {
-    perClick *= 2;
-    clickPowerCost *= 3;
-    showMessage('Click power doubled!');
+clickBoostBtn.addEventListener('click', () => buyUpgrade(clickBoostCost, () => {
+    clickBoostLevel++;
+    bonus += 1; // +1 per click
+    clickBoostCost *= 2;
+    showMessage('Click boost increased!');
 }));
 
-autoClickerBtn.addEventListener('click', () => buyUpgrade('autoClicker', autoClickerCost, () => {
+autoClickerBtn.addEventListener('click', () => buyUpgrade(autoClickerCost, () => {
     autoClickers++;
     autoClickerCost *= 2;
     showMessage('Auto-clicker added!');
 }));
 
-luckyCharmBtn.addEventListener('click', () => buyUpgrade('luckyCharm', luckyCharmCost, () => {
-    luckyMultiplier += 0.1;
-    luckyCharmCost *= 2.5;
-    showMessage('Luck increased!');
+drumRollBtn.addEventListener('click', () => buyUpgrade(drumRollCost, () => {
+    drumRollBonus += 2;
+    bonus += 2;
+    drumRollCost *= 2.5;
+    showMessage('Drum roll bonus added!');
 }));
 
-tomTomDrumBtn.addEventListener('click', () => buyUpgrade('tomTomDrum', tomTomDrumCost, () => {
-    drumBoost += 5;
-    tomTomDrumCost *= 2;
-    showMessage('Drum boost added!');
+tomFrenzyBtn.addEventListener('click', () => buyUpgrade(tomFrenzyCost, () => {
+    frenzyMultiplier += 0.5;
+    bonus = Math.floor(bonus * 1.5); // 50% bonus to existing bonus
+    tomFrenzyCost *= 3;
+    showMessage('Tom frenzy activated!');
 }));
 
-rhythmMasterBtn.addEventListener('click', () => buyUpgrade('rhythmMaster', rhythmMasterCost, () => {
-    rhythmBonus += 10;
-    rhythmMasterCost *= 3;
-    showMessage('Rhythm mastery improved!');
-}));
-
-goldenTomBtn.addEventListener('click', () => buyUpgrade('goldenTom', goldenTomCost, () => {
-    goldenMultiplier += 0.5;
-    goldenTomCost *= 4;
-    showMessage('Golden Tom power unleashed!');
+beatMasterBtn.addEventListener('click', () => buyUpgrade(beatMasterCost, () => {
+    beatMasterBonus += 5;
+    bonus += 5;
+    beatMasterCost *= 2;
+    showMessage('Beat master power gained!');
 }));
 
 // Auto-clicker loop
 setInterval(() => {
     if (autoClickers > 0) {
-        let autoValue = Math.floor(autoClickers * perClick * luckyMultiplier * goldenMultiplier + drumBoost + rhythmBonus);
+        let autoValue = autoClickers * (1 + bonus); // 1 base + bonus per auto-clicker
         clicks += autoValue;
         updateDisplay();
     }
 }, 1000);
 
 // Generic buy upgrade function
-function buyUpgrade(type, cost, callback) {
+function buyUpgrade(cost, callback) {
     if (clicks >= cost) {
         clicks -= cost;
         callback();
         updateDisplay();
     } else {
-        showMessage(`Not enough clicks for ${type.replace(/([A-Z])/g, ' $1').toLowerCase()}!`);
+        showMessage('Not enough clicks!');
     }
 }
 
 function updateDisplay() {
     clicksDisplay.textContent = clicks;
-    perClickDisplay.textContent = perClick;
-    powerDisplay.textContent = Math.floor(autoClickers + (luckyMultiplier-1)*10 + drumBoost/5 + rhythmBonus/10 + (goldenMultiplier-1)*2);
-    document.getElementById('clickPowerCost').textContent = clickPowerCost;
+    bonusDisplay.textContent = bonus;
+    powerDisplay.textContent = autoClickers + clickBoostLevel + Math.floor(drumRollBonus/2) + Math.floor((frenzyMultiplier-1)*2) + Math.floor(beatMasterBonus/5);
+    document.getElementById('clickBoostCost').textContent = clickBoostCost;
     document.getElementById('autoClickerCost').textContent = autoClickerCost;
-    document.getElementById('luckyCharmCost').textContent = Math.floor(luckyCharmCost);
-    document.getElementById('tomTomDrumCost').textContent = tomTomDrumCost;
-    document.getElementById('rhythmMasterCost').textContent = rhythmMasterCost;
-    document.getElementById('goldenTomCost').textContent = goldenTomCost;
+    document.getElementById('drumRollCost').textContent = drumRollCost;
+    document.getElementById('tomFrenzyCost').textContent = tomFrenzyCost;
+    document.getElementById('beatMasterCost').textContent = beatMasterCost;
     
-    clickPowerBtn.disabled = clicks < clickPowerCost;
+    clickBoostBtn.disabled = clicks < clickBoostCost;
     autoClickerBtn.disabled = clicks < autoClickerCost;
-    luckyCharmBtn.disabled = clicks < luckyCharmCost;
-    tomTomDrumBtn.disabled = clicks < tomTomDrumCost;
-    rhythmMasterBtn.disabled = clicks < rhythmMasterCost;
-    goldenTomBtn.disabled = clicks < goldenTomCost;
+    drumRollBtn.disabled = clicks < drumRollCost;
+    tomFrenzyBtn.disabled = clicks < tomFrenzyCost;
+    beatMasterBtn.disabled = clicks < beatMasterCost;
 }
 
 function showMessage(text) {
