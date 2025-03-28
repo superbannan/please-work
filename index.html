@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tom Tom Clicker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Tom Tom Clicker</h1>
+        <div id="stats">
+            <p>Clicks: <span id="clicks">0</span></p>
+            <p>Clicks Per Click: <span id="perClick">1</span></p>
+            <p>Tom Tom Power: <span id="power">0</span></p>
+        </div>
+        
+        <button id="clickBtn">Click Me!</button>
+        
+        <div id="upgrades">
+            <button id="clickPowerBtn">Click Power ($<span id="clickPowerCost">10</span>)</button>
+            <button id="autoClickerBtn">Auto Clicker ($<span id="autoClickerCost">50</span>)</button>
+            <button id="luckyCharmBtn">Lucky Charm ($<span id="luckyCharmCost">100</span>)</button>
+            <button id="tomTomDrumBtn">Tom Tom Drum ($<span id="tomTomDrumCost">200</span>)</button>
+            <button id="rhythmMasterBtn">Rhythm Master ($<span id="rhythmMasterCost">500</span>)</button>
+            <button id="goldenTomBtn">Golden Tom ($<span id="goldenTomCost">1000</span>)</button>
+        </div>
+        
+        <div id="message"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
