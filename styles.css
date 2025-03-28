@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0e6d6;
+}
+
+.game-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff5e6;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+#clickBtn {
+    padding: 25px 50px;
+    font-size: 28px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#clickBtn:hover {
+    transform: scale(1.05);
+}
+
+#clickBtn:active {
+    transform: scale(0.95);
+}
+
+#upgrades button {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #ff8800;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#upgrades button:hover {
+    background-color: #e67a00;
+}
+
+#upgrades button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#stats {
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+#message {
+    margin-top: 20px;
+    color: #555;
+    font-style: italic;
+}
